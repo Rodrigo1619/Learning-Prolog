@@ -1,0 +1,67 @@
+
+%HACER UN PROGRAMA QUE MUESTRE LOS NUMEROS DADO UN INTERVALO
+%Ahora vamos a hacer el caso trivial para que no de false esto
+% es para que al final cuando A=B Y NO LLEGUE SOLO HASTA 6
+contar(A,B):-
+    =:=(A,B),
+    writeln(A),
+    !.
+
+contar(A,B):-
+    <(A,B),
+    writeln(A),
+    is(Aauxliar,+(A,1)),
+    contar(Aauxliar,B).
+
+%HACER EL FACTORIAL DE UN NUMERO
+%LAS 2 REGLAS PARA 0 Y 1
+factorial(0,1):-!.
+factorial(1,1):-!.
+
+
+%Regla para el factorial
+factorial(N, Fact):-
+    >(N,1),
+    is(Nm1,-(N,1)),%ESTE ES N-1
+    factorial(Nm1, Factauxiliar),
+    is(Fact, *(N,Factauxiliar)).
+
+
+
+%VERSION HECHA EN CHATGPT Y SIRVE
+%factorial(0, 1).
+%factorial(N, Resultado) :-
+%    N > 0,
+%   N1 is N - 1,
+%    factorial(N1, SubResultado),
+%    Resultado is N * SubResultado.
+
+%Serie de fibonacci
+%casos triviales
+fibo(0,0):-!.
+fibo(1,1):-!.
+
+fibo(N,Fn):-
+    is(Nm1, -(N,1)),
+    fibo(Nm1, Fnm1),
+    is(Nm2, -(N,2)),
+    fibo(Nm2, Fnm2),
+    is(Fn, +(Fnm1, Fnm2)).
+%Sumar enteros comprendidos en un intervalo
+%VALIDAR QUE NO SE METAN NUMEROS ALREVES
+%_ es una variable anonima, no usamos Suma
+sumaIntervalo(A,B,_):-
+    >(A,B),
+    writeln('Has metido los datos alreves'),
+    !,
+    fail. %fail es para regresar un false
+%caso trivial
+sumaIntervalo(A,B,Suma):-
+    =:=(A,B),
+    is(Suma,B),
+    !.
+sumaIntervalo(A,B,Suma):-
+    <(A,B),
+    is(Asig, +(A,1)),
+    sumaIntervalo(Asig,B,SumaTemp),
+    is(Suma, +(SumaTemp, A)).
