@@ -1,0 +1,46 @@
+%a-)fases de metamorfosis de la rana
+fase(huevo).
+fase(embrion).
+fase(renacuajo).
+fase(renacuajoConDosPatas).
+fase(renacuajoConCuatroPatas).
+fase(ranaDeColaCorta).
+fase(ranaAdulta).
+
+%b-)Relaciones de aridad 2, llevar de cada fase a la siguiente
+%primer argumento a una fase y el segundo la fase que sigue
+nuevaFase(huevo,embrion).
+nuevaFase(embrion,renacuajo).
+nuevaFase(renacuajo,renacuajoConDosPatas).
+nuevaFase(renacuajoConDosPatas,renacuajoConCuatroPatas).
+nuevaFase(renacuajoConCuatroPatas, ranaDeColaCorta).
+nuevaFase(ranaDeColaCorta,ranaAdulta).
+
+% C-)Regla donde se proporciona una fase y muestra todas las que
+% prosiguen
+% Validacion por si el usuario no escribe nada, se añaden validaciones
+% requeridas
+fasesSiguientes():-
+    writeln("Debes de escribir algo aqui"),
+    !,
+    fail.
+
+%validacion para que el usuario escriba una fase edxistente
+fasesSiguientes(F):-
+    \+ fase(F),
+    writeln("Debes de escribir una fase que exista"),
+    !,
+    fail.
+
+
+fasesSiguientes(F):-
+    nuevaFase(F,G),
+    fasesSiguientes(G),
+    writeln(G),
+    !.
+
+%validacion de que si llega a rana adulta muestre que no hay mas fases
+fasesSiguientes(ranaAdulta):-
+    writeln("nimodo ya no hay mas fases"),
+    !.
+
