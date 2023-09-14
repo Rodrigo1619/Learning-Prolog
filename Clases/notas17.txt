@@ -1,0 +1,72 @@
+Vamos a analizarlo línea por línea:
+
+desea_conocer_v2(X, Y) es la declaración de una regla (predicado) llamada desea_conocer_v2 que toma dos argumentos, X y Y. Esta regla se usa para iniciar la búsqueda de conocimiento entre dos eslabones X e Y.
+
+abolish(eslabon, 1) es un comando utilizado para eliminar cualquier hecho previo llamado eslabon/1. En Prolog, los predicados pueden ser dinámicos, lo que significa que pueden ser modificados durante la ejecución del programa. En este caso, se está eliminando cualquier hecho anterior de eslabon/1 para comenzar con una base de conocimiento limpia.
+
+assert(eslabon(X)) agrega un nuevo hecho llamado eslabon(X). Esto establece X como el primer eslabón en la cadena de eslabones.
+
+desea_conocer_v2_rec(X, Y) es una llamada a una regla recursiva llamada desea_conocer_v2_rec con X e Y como argumentos. Esta regla es responsable de buscar la cadena de eslabones desde X hasta Y.
+
+writeln(X) es una instrucción que escribe el valor actual de X en la consola o salida estándar. Esto es útil para mostrar el progreso o el resultado de la búsqueda en la consola.
+
+En resumen, este código en Prolog está diseñado para buscar una cadena de eslabones desde un punto inicial X hasta un punto final Y. Comienza eliminando cualquier conocimiento previo sobre eslabones, estableciendo X como el primer eslabón y luego llamando a una regla recursiva para continuar la búsqueda. Durante el proceso, muestra el valor de X en la consola para mostrar el progreso. La lógica específica de la búsqueda se implementaría en la regla recursiva desea_conocer_v2_rec, que no se proporciona en el fragmento de código que has compartido.
+
+-------------------------------------
+desea_conocer_v2_rec(X, Y):-
+    conoce(X, Y),
+    writeln(Y),
+    assert(eslabon(Y)),
+    !.
+Esta regla se aplica cuando se puede llegar directamente desde X a Y utilizando la relación conoce(X, Y).
+Primero, se verifica si X conoce a Y.
+Si es así, se escribe el valor de Y en la consola utilizando writeln(Y).
+Luego, se agrega Y como un nuevo eslabón utilizando assert(eslabon(Y)) para registrar el progreso de la búsqueda.
+Finalmente, el corte ! se utiliza para evitar que Prolog busque más soluciones alternativas para esta regla.
+
+
+desea_conocer_v2_rec(X, _):-
+    conoce(X, Z),
+    eslabon(Z),
+    fail.
+Esta regla se aplica cuando no se puede llegar directamente desde X a Y, pero X conoce a otro eslabón Z y Z ya ha sido marcado como un eslabón (eslabon(Z) es verdadero).
+En esta regla, _ es un comodín que se usa para indicar que no nos importa el valor de Y.
+La regla verifica si X conoce a Z y si Z ya ha sido marcado como un eslabón.
+Si ambas condiciones se cumplen, la regla falla (fail), lo que significa que no se considera una solución válida.
+
+desea_conocer_v2_rec(X, Y):-
+    conoce(X, Z),
+    not(eslabon(Z)),
+    assert(eslabon(Z)),
+    desea_conocer_v2_rec(Z, Y),
+    writeln(Z),
+    !.
+Esta regla se aplica cuando no se puede llegar directamente desde X a Y, pero X conoce a otro eslabón Z y Z aún no ha sido marcado como un eslabón (not(eslabon(Z)) es verdadero).
+Primero, se verifica si X conoce a Z.
+Luego, se agrega Z como un nuevo eslabón utilizando assert(eslabon(Z)).
+Después, se llama a desea_conocer_v2_rec(Z, Y) de manera recursiva para continuar la búsqueda desde Z hasta Y.
+El valor de Z se escribe en la consola utilizando writeln(Z).
+Finalmente, el corte ! se utiliza para evitar que Prolog busque más soluciones alternativas para esta regla.
+
+--------------------------------------------------
+"eslabón" es un término que se utiliza para representar un punto o un nodo en una cadena de conocimiento o en una secuencia de relaciones. En este contexto, parece que "eslabón" se utiliza para rastrear y registrar los nodos (o puntos) que se han visitado o que forman parte de la cadena de conocimiento que se está buscando.
+
+En las reglas que has proporcionado, el predicado eslabon/1 se utiliza para verificar si un cierto elemento (un nodo o punto) ya ha sido visitado o es parte de la cadena de conocimiento.
+
+En Prolog, abolish y assert son predicados que se utilizan para trabajar con hechos y reglas dinámicas, lo que significa que permiten agregar o eliminar información en la base de conocimiento en tiempo de ejecución.
+
+abolish/1:
+
+abolish se utiliza para eliminar o abolir reglas y hechos de la base de conocimiento dinámica.
+El argumento de abolish es de la forma predicado/arity, donde predicado es el nombre del predicado que se desea eliminar, y arity es el número de argumentos que toma el predicado. El número de aridad se utiliza para identificar de manera única el predicado, ya que en Prolog los predicados pueden tener el mismo nombre pero diferente cantidad de argumentos.
+Por ejemplo, en tu código: abolish(eslabon, 1) se utiliza para eliminar cualquier hecho previo llamado eslabon/1. Esto significa que se están eliminando todos los hechos eslabon(X).
+assert/1:
+
+assert se utiliza para agregar hechos o reglas a la base de conocimiento dinámica durante la ejecución del programa.
+El argumento de assert es una regla o un hecho que se desea agregar a la base de conocimiento.
+Por ejemplo, en tu código: assert(eslabon(Y)) se utiliza para agregar un nuevo hecho eslabon(Y) a la base de conocimiento. Esto se hace para registrar que Y es un eslabón en la cadena de conocimiento.
+Ambos abolish y assert son útiles cuando se trabaja con bases de conocimiento que deben modificarse o actualizarse durante la ejecución del programa. Permiten agregar o eliminar información según sea necesario para resolver problemas o llevar a cabo operaciones específicas en Prolog.
+
+
+
+
